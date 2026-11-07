@@ -1,0 +1,350 @@
+<Window x:Class="AntigravityGateway.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Antigravity Gateway Pro — Обход геоблокировки Gemini" 
+        Height="700" Width="960"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        FontFamily="Segoe UI, Segoe UI Variable, sans-serif"
+        Loaded="Window_Loaded"
+        Closing="Window_Closing">
+
+    <Border Background="{StaticResource BgDarkBrush}" 
+            BorderBrush="{StaticResource BorderDarkBrush}" 
+            BorderThickness="1" 
+            CornerRadius="10">
+        <Grid>
+            <Grid.RowDefinitions>
+                <!-- Titlebar -->
+                <RowDefinition Height="42"/>
+                <!-- Header Banner -->
+                <RowDefinition Height="85"/>
+                <!-- Main Body (Navigation + Content) -->
+                <RowDefinition Height="*"/>
+                <!-- Footer Status Bar -->
+                <RowDefinition Height="32"/>
+            </Grid.RowDefinitions>
+
+            <!-- 1. Custom Title Bar -->
+            <Border Grid.Row="0" Background="{StaticResource CardDarkerBrush}" 
+                    CornerRadius="10,10,0,0" 
+                    MouseDown="TitleBar_MouseDown">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="14,0,0,0">
+                        <TextBlock Text="⚡" FontSize="16" Foreground="{StaticResource AccentBlueBrush}" Margin="0,0,8,0"/>
+                        <TextBlock Text="Antigravity Gateway Pro" FontWeight="Bold" FontSize="13" Foreground="{StaticResource TextMainBrush}"/>
+                        <TextBlock Text=" — Gemini Geoblock Bypass Suite" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,8,0">
+                        <Button Content="🗕" Width="36" Height="28" Background="Transparent" Foreground="{StaticResource TextMutedBrush}" BorderThickness="0" Click="BtnMinimize_Click" Cursor="Hand"/>
+                        <Button Content="✕" Width="36" Height="28" Background="Transparent" Foreground="{StaticResource TextMutedBrush}" BorderThickness="0" Click="BtnClose_Click" Cursor="Hand"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 2. Header Banner -->
+            <Border Grid.Row="1" Background="{StaticResource CardDarkBrush}" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="0,0,0,1" Padding="20,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <Border x:Name="StatusBadge" Background="#26382B" CornerRadius="12" Padding="10,3" Margin="0,0,10,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse x:Name="StatusDot" Width="8" Height="8" Fill="{StaticResource AccentGreenBrush}" Margin="0,0,6,0"/>
+                                    <TextBlock x:Name="TxtStatusBadge" Text="КАНАЛ СВЯЗИ АКТИВЕН" FontSize="11" FontWeight="Bold" Foreground="{StaticResource AccentGreenBrush}"/>
+                                </StackPanel>
+                            </Border>
+                            <TextBlock x:Name="TxtActiveModeName" Text="Режим: Варшава SSH + Cloudflare WARP" FontSize="12" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <TextBlock x:Name="TxtHeaderDetail" Text="Туннель запущен на порту 10810. Трафик Gemini направляется через европейский узел." FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button x:Name="BtnToggleTunnel" Content="🔌 Переподключить туннель" 
+                                Width="180" Height="42" Margin="0,0,10,0" 
+                                Background="{StaticResource CardDarkerBrush}" Foreground="{StaticResource TextMainBrush}" 
+                                BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="1" 
+                                FontWeight="SemiBold" FontSize="12" Cursor="Hand" Click="BtnToggleTunnel_Click"/>
+
+                        <Button x:Name="BtnLaunchAntigravity" Content="🚀 Запустить Antigravity" 
+                                Width="190" Height="42" 
+                                Background="{StaticResource AccentBlueBrush}" Foreground="#11111B" 
+                                BorderThickness="0" FontWeight="Bold" FontSize="13" Cursor="Hand" Click="BtnLaunchAntigravity_Click"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 3. Main Navigation & Content Body -->
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left Sidebar Tabs -->
+                <Border Grid.Column="0" Background="{StaticResource CardDarkerBrush}" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="0,0,1,0">
+                    <StackPanel Margin="10,16">
+                        <RadioButton x:Name="TabModes" Content="🛡️ Режимы обхода" IsChecked="True" Style="{x:Null}" Height="40" Margin="0,0,0,6" Foreground="{StaticResource TextMainBrush}" FontWeight="SemiBold" Checked="Tab_Checked" Cursor="Hand"/>
+                        <RadioButton x:Name="TabDiagnostics" Content="🔍 Диагностика Google" Style="{x:Null}" Height="40" Margin="0,0,0,6" Foreground="{StaticResource TextMutedBrush}" FontWeight="SemiBold" Checked="Tab_Checked" Cursor="Hand"/>
+                        <RadioButton x:Name="TabTools" Content="⚡ Сброс и Твики" Style="{x:Null}" Height="40" Margin="0,0,0,6" Foreground="{StaticResource TextMutedBrush}" FontWeight="SemiBold" Checked="Tab_Checked" Cursor="Hand"/>
+                        <RadioButton x:Name="TabSettings" Content="⚙️ Настройки" Style="{x:Null}" Height="40" Margin="0,0,0,6" Foreground="{StaticResource TextMutedBrush}" FontWeight="SemiBold" Checked="Tab_Checked" Cursor="Hand"/>
+
+                        <Border Height="1" Background="{StaticResource BorderDarkBrush}" Margin="0,16,0,16"/>
+
+                        <TextBlock Text="БЫСТРЫЕ ДЕЙСТВИЯ" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}" Margin="6,0,0,8"/>
+                        <Button Content="🔄 Сброс Language Server" Height="34" Background="{StaticResource CardDarkBrush}" Foreground="{StaticResource AccentCyanBrush}" BorderThickness="1" BorderBrush="{StaticResource BorderDarkBrush}" Margin="0,0,0,6" Click="BtnQuickRestartLs_Click" Cursor="Hand"/>
+                        <Button Content="🛑 Остановить процессы" Height="34" Background="{StaticResource CardDarkBrush}" Foreground="{StaticResource AccentRedBrush}" BorderThickness="1" BorderBrush="{StaticResource BorderDarkBrush}" Click="BtnKillAll_Click" Cursor="Hand"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Content Area -->
+                <Grid Grid.Column="1" Margin="24,18">
+
+                    <!-- TAB 1: MODES -->
+                    <ScrollViewer x:Name="ViewModes" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Text="Выберите метод обхода геоблокировки Gemini" FontSize="16" FontWeight="Bold" Margin="0,0,0,4"/>
+                            <TextBlock Text="Если один из методов перестаёт работать или выдаёт ошибку 400, переключитесь на следующий." FontSize="12" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,16"/>
+
+                            <!-- Mode 1 Card -->
+                            <Border Background="{StaticResource CardDarkBrush}" BorderBrush="{StaticResource AccentBlueBrush}" BorderThickness="1.5" CornerRadius="8" Padding="16" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <RadioButton x:Name="RbModeWarsawSsh" GroupName="BypassModes" IsChecked="True" VerticalAlignment="Top" Margin="0,3,14,0" Checked="RbMode_Checked"/>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Режим 1: Варшава SSH + Cloudflare WARP (Рекомендуемый)" FontWeight="Bold" FontSize="14" Margin="0,0,0,4"/>
+                                        <TextBlock Text="Трафик маршрутизируется через наш польский сервер (91.196.161.40) на шлюз Cloudflare WARP. Предотвращает утечки IPv6 и скрывает российский IP от эндпоинтов Google." TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                            <TextBlock Text="Локальный порт: 10810" FontSize="11" Foreground="{StaticResource AccentCyanBrush}" Margin="0,0,16,0"/>
+                                            <TextBlock Text="Выход: Варшава (Польша) / Cloudflare" FontSize="11" Foreground="{StaticResource AccentGreenBrush}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Button Grid.Column="2" Content="Применить" VerticalAlignment="Center" Width="90" Height="32" Background="{StaticResource CardDarkerBrush}" Foreground="{StaticResource TextMainBrush}" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="1" Click="BtnApplyCurrentMode_Click"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Mode 2 Card -->
+                            <Border Background="{StaticResource CardDarkBrush}" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <RadioButton x:Name="RbModeXrayVless" GroupName="BypassModes" VerticalAlignment="Top" Margin="0,3,14,0" Checked="RbMode_Checked"/>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Режим 2: Xray VLESS Reality (Прямой обходной туннель)" FontWeight="Bold" FontSize="14" Margin="0,0,0,4"/>
+                                        <TextBlock Text="Использует ядро Xray с протоколом VLESS и маскировкой Reality. Работает на портах 10808/10809 и пробивает любые DPI-блокировки провайдеров." TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                            <TextBlock Text="Локальный порт: 10808 (SOCKS) / 10809 (HTTP)" FontSize="11" Foreground="{StaticResource AccentCyanBrush}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Button Grid.Column="2" Content="Применить" VerticalAlignment="Center" Width="90" Height="32" Background="{StaticResource CardDarkerBrush}" Foreground="{StaticResource TextMainBrush}" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="1" Click="BtnApplyCurrentMode_Click"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Mode 3 Card -->
+                            <Border Background="{StaticResource CardDarkBrush}" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <RadioButton x:Name="RbModeProcessHook" GroupName="BypassModes" VerticalAlignment="Top" Margin="0,3,14,0" Checked="RbMode_Checked"/>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Режим 3: Точечный перехват сокетов (Process Hook)" FontWeight="Bold" FontSize="14" Margin="0,0,0,4"/>
+                                        <TextBlock Text="Перехватывает только сетевые вызовы процессов language_server.exe и Antigravity.exe через DLL-хуки. Браузеры, игры и остальные приложения Windows продолжают работать напрямую." TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                            <TextBlock Text="Режим изоляции: Включен" FontSize="11" Foreground="{StaticResource AccentGreenBrush}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Button Grid.Column="2" Content="Применить" VerticalAlignment="Center" Width="90" Height="32" Background="{StaticResource CardDarkerBrush}" Foreground="{StaticResource TextMainBrush}" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="1" Click="BtnApplyCurrentMode_Click"/>
+                                </Grid>
+                            </Border>
+
+                            <!-- Mode 4 Card -->
+                            <Border Background="{StaticResource CardDarkBrush}" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="1" CornerRadius="8" Padding="16">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <RadioButton x:Name="RbModeDirectEnv" GroupName="BypassModes" VerticalAlignment="Top" Margin="0,3,14,0" Checked="RbMode_Checked"/>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Режим 4: Инъекция переменных среды и Gemini API Key" FontWeight="Bold" FontSize="14" Margin="0,0,0,4"/>
+                                        <TextBlock Text="Запускает Antigravity с внедрением GEMINI_API_KEY и флагами таймзоны Europe/Warsaw, отключая проверку региона на уровне аккаунта Google." TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                            <TextBlock Text="Обход региона аккаунта: Активен" FontSize="11" Foreground="{StaticResource AccentCyanBrush}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Button Grid.Column="2" Content="Применить" VerticalAlignment="Center" Width="90" Height="32" Background="{StaticResource CardDarkerBrush}" Foreground="{StaticResource TextMainBrush}" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="1" Click="BtnApplyCurrentMode_Click"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- TAB 2: DIAGNOSTICS -->
+                    <ScrollViewer x:Name="ViewDiagnostics" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="Живая проверка связности с Google Gemini" FontSize="16" FontWeight="Bold"/>
+                                    <TextBlock Text="Тестирует доступность серверов Google, прокси-туннель и видимый IP" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                </StackPanel>
+                                <Button Content="🔍 Запустить полный тест" Width="180" Height="36" HorizontalAlignment="Right" Margin="120,0,0,0" Background="{StaticResource AccentBlueBrush}" Foreground="#11111B" FontWeight="Bold" Click="BtnRunDiagnostics_Click" Cursor="Hand"/>
+                            </StackPanel>
+
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Card: Local Proxy -->
+                                <Border Grid.Column="0" Background="{StaticResource CardDarkBrush}" CornerRadius="8" Padding="14" Margin="0,0,6,0">
+                                    <StackPanel>
+                                        <TextBlock Text="ЛОКАЛЬНЫЙ ТУННЕЛЬ (ПОРТ 10810)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}"/>
+                                        <TextBlock x:Name="TxtDiagTunnelPort" Text="Проверяется..." FontSize="14" FontWeight="Bold" Foreground="{StaticResource AccentCyanBrush}" Margin="0,4,0,0"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Card: External IP -->
+                                <Border Grid.Column="1" Background="{StaticResource CardDarkBrush}" CornerRadius="8" Padding="14" Margin="6,0,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="ВИДИМЫЙ IP ДЛЯ GOOGLE" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}"/>
+                                        <TextBlock x:Name="TxtDiagIp" Text="Проверяется..." FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextMainBrush}" Margin="0,4,0,0"/>
+                                        <TextBlock x:Name="TxtDiagCountry" Text="" FontSize="11" Foreground="{StaticResource TextMutedBrush}"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Card: Gemini API Endpoint -->
+                                <Border Grid.Column="0" Background="{StaticResource CardDarkBrush}" CornerRadius="8" Padding="14" Margin="0,0,6,0">
+                                    <StackPanel>
+                                        <TextBlock Text="GOOGLE CLOUDCODE / GEMINI API" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}"/>
+                                        <TextBlock x:Name="TxtDiagGeminiApi" Text="Проверяется..." FontSize="14" FontWeight="Bold" Foreground="{StaticResource AccentGreenBrush}" Margin="0,4,0,0"/>
+                                        <TextBlock Text="Эндпоинт: cloudcode-pa.googleapis.com" FontSize="11" Foreground="{StaticResource TextMutedBrush}"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Card: Language Server Process -->
+                                <Border Grid.Column="1" Background="{StaticResource CardDarkBrush}" CornerRadius="8" Padding="14" Margin="6,0,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="LANGUAGE SERVER (ДВИЖОК GEMINI)" FontSize="10" FontWeight="Bold" Foreground="{StaticResource TextMutedBrush}"/>
+                                        <TextBlock x:Name="TxtDiagLsProcess" Text="Проверяется..." FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextMainBrush}" Margin="0,4,0,0"/>
+                                        <TextBlock x:Name="TxtDiagAgProcess" Text="Antigravity: Не запущен" FontSize="11" Foreground="{StaticResource TextMutedBrush}"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <!-- Summary Alert Card -->
+                            <Border x:Name="CardSummary" Background="#1B2B34" BorderBrush="{StaticResource AccentCyanBrush}" BorderThickness="1" CornerRadius="8" Padding="16" Margin="0,8,0,0">
+                                <TextBlock x:Name="TxtDiagSummary" Text="Нажмите «Запустить полный тест» для проверки канала связи." TextWrapping="Wrap" FontSize="13" Foreground="{StaticResource TextMainBrush}"/>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- TAB 3: TOOLS & TWEAKS -->
+                    <ScrollViewer x:Name="ViewTools" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Text="Специальные инструменты и твики Antigravity" FontSize="16" FontWeight="Bold" Margin="0,0,0,4"/>
+                            <TextBlock Text="Используйте эти действия, если окно Antigravity зависло или выдало ошибку региона" FontSize="12" Foreground="{StaticResource TextMutedBrush}" Margin="0,0,0,16"/>
+
+                            <Border Background="{StaticResource CardDarkBrush}" CornerRadius="8" Padding="16" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Сброс и форсирование Gemini (-model_api_client_type=gemini)" FontWeight="Bold" FontSize="14" Margin="0,0,0,4"/>
+                                        <TextBlock Text="На лету перезапускает процесс language_server.exe без закрытия редактора кода, принудительно назначая клиента Gemini и проксируя через Варшаву." TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Content="⚡ Сбросить LS" Width="140" Height="36" Background="{StaticResource AccentCyanBrush}" Foreground="#11111B" FontWeight="Bold" Click="BtnQuickRestartLs_Click" Cursor="Hand"/>
+                                </Grid>
+                            </Border>
+
+                            <Border Background="{StaticResource CardDarkBrush}" CornerRadius="8" Padding="16" Margin="0,0,0,12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Очистка зависших процессов и блокировок" FontWeight="Bold" FontSize="14" Margin="0,0,0,4"/>
+                                        <TextBlock Text="Принудительно закрывает зависшие экземпляры Antigravity, Language Server и SSH-туннелей, освобождая память и сетевые порты." TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource TextMutedBrush}"/>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Content="🛑 Очистить всё" Width="140" Height="36" Background="{StaticResource AccentRedBrush}" Foreground="#11111B" FontWeight="Bold" Click="BtnKillAll_Click" Cursor="Hand"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- TAB 4: SETTINGS -->
+                    <ScrollViewer x:Name="ViewSettings" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <TextBlock Text="Конфигурация серверов и путей" FontSize="16" FontWeight="Bold" Margin="0,0,0,16"/>
+
+                            <TextBlock Text="Хост Варшавского сервера (VPS):" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <TextBox x:Name="InputWarsawHost" Margin="0,0,0,12"/>
+
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,6,0">
+                                    <TextBlock Text="Удаленный порт Tinyproxy (Варшава):" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                    <TextBox x:Name="InputWarsawPort"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="6,0,0,0">
+                                    <TextBlock Text="Локальный порт туннеля на ПК:" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                                    <TextBox x:Name="InputLocalPort"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <TextBlock Text="Путь к приватному ключу SSH:" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <TextBox x:Name="InputSshKey" Margin="0,0,0,12"/>
+
+                            <TextBlock Text="Путь к исполняемому файлу Antigravity.exe:" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <TextBox x:Name="InputAgPath" Margin="0,0,0,12"/>
+
+                            <TextBlock Text="Прямой Gemini API Key (для полного обхода региона аккаунта):" FontSize="12" FontWeight="SemiBold" Margin="0,0,0,4"/>
+                            <TextBox x:Name="InputApiKey" Margin="0,0,0,16"/>
+
+                            <Button Content="💾 Сохранить настройки" Width="200" Height="38" HorizontalAlignment="Left" Background="{StaticResource AccentBlueBrush}" Foreground="#11111B" FontWeight="Bold" Click="BtnSaveSettings_Click" Cursor="Hand"/>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                </Grid>
+            </Grid>
+
+            <!-- 4. Footer Status Bar -->
+            <Border Grid.Row="3" Background="{StaticResource CardDarkerBrush}" BorderBrush="{StaticResource BorderDarkBrush}" BorderThickness="0,1,0,0" Padding="14,0">
+                <Grid VerticalAlignment="Center">
+                    <TextBlock x:Name="TxtFooterInfo" Text="Готов к работе | Нажмите «Запустить Antigravity»" FontSize="11" Foreground="{StaticResource TextMutedBrush}"/>
+                    <TextBlock Text="v2.5.0 Pro Native" FontSize="11" Foreground="{StaticResource TextMutedBrush}" HorizontalAlignment="Right"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

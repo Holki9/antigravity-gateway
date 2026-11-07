@@ -1,0 +1,45 @@
+<Application x:Class="AntigravityGateway.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Startup="Application_Startup"
+             Exit="Application_Exit">
+    <Application.Resources>
+        <!-- Colors -->
+        <Color x:Key="BgDark">#181825</Color>
+        <Color x:Key="CardDark">#1E1E2E</Color>
+        <Color x:Key="CardDarker">#11111B</Color>
+        <Color x:Key="AccentBlue">#89B4FA</Color>
+        <Color x:Key="AccentCyan">#94E2D5</Color>
+        <Color x:Key="AccentGreen">#A6E3A1</Color>
+        <Color x:Key="AccentRed">#F38BA8</Color>
+        <Color x:Key="TextMain">#CDD6F4</Color>
+        <Color x:Key="TextMuted">#A6ADC8</Color>
+        <Color x:Key="BorderDark">#313244</Color>
+
+        <SolidColorBrush x:Key="BgDarkBrush" Color="{StaticResource BgDark}"/>
+        <SolidColorBrush x:Key="CardDarkBrush" Color="{StaticResource CardDark}"/>
+        <SolidColorBrush x:Key="CardDarkerBrush" Color="{StaticResource CardDarker}"/>
+        <SolidColorBrush x:Key="AccentBlueBrush" Color="{StaticResource AccentBlue}"/>
+        <SolidColorBrush x:Key="AccentCyanBrush" Color="{StaticResource AccentCyan}"/>
+        <SolidColorBrush x:Key="AccentGreenBrush" Color="{StaticResource AccentGreen}"/>
+        <SolidColorBrush x:Key="AccentRedBrush" Color="{StaticResource AccentRed}"/>
+        <SolidColorBrush x:Key="TextMainBrush" Color="{StaticResource TextMain}"/>
+        <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMuted}"/>
+        <SolidColorBrush x:Key="BorderDarkBrush" Color="{StaticResource BorderDark}"/>
+
+        <!-- Global Control Styles -->
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextMainBrush}"/>
+            <Setter Property="FontFamily" Value="Segoe UI, Segoe UI Variable, sans-serif"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="{StaticResource CardDarkerBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextMainBrush}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderDarkBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+    </Application.Resources>
+</Application>
