@@ -244,7 +244,7 @@ namespace AntigravityGateway.Views
                     bool ok = await _tunnelService.StartTunnelAsync();
                     if (!ok)
                     {
-                        MessageBox.Show("Не удалось запустить защитный туннель до Варшавы. Проверьте настройки SSH.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        System.Windows.MessageBox.Show("Не удалось запустить защитный туннель до Варшавы. Проверьте настройки SSH.", "Предупреждение", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Warning);
                     }
                 }
 
@@ -255,7 +255,7 @@ namespace AntigravityGateway.Views
                 }
                 else
                 {
-                    MessageBox.Show("Не удалось найти Antigravity.exe по указанному пути. Проверьте вкладку «Настройки».", "Файл не найден", MessageBoxButton.OK, MessageBoxImage.Error);
+                    System.Windows.MessageBox.Show("Не удалось найти Antigravity.exe по указанному пути. Проверьте вкладку «Настройки».", "Файл не найден", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
                 }
             }
             finally
